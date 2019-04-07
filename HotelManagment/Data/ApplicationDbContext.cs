@@ -1,6 +1,7 @@
 ﻿using HotelManagment.Data.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using HotelManagment.Models;
 
 namespace HotelManagment.Data
 {

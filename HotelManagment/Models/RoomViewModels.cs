@@ -1,4 +1,5 @@
 ﻿using System;
+using HotelManagment.Data;
 
 namespace HotelManagment.Models
 {
@@ -7,6 +8,6 @@ namespace HotelManagment.Models
         public Guid Id { get; set; }
         public string Number { get; set; }
         public decimal Price { get; set; }
-        public string Type { get; set; }
+        public RoomType Type { get; set; }
     }
 }

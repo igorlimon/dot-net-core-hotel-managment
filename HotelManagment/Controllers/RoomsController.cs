@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HotelManagment.Data;
-using HotelManagment.Data.Entities;
+using HotelManagment.Models;
 
 namespace HotelManagment.Controllers
 {
@@ -19,13 +17,13 @@ namespace HotelManagment.Controllers
             _context = context;
         }
 
-        // GET: Rooms
+        // GET: RoomViewModels
         public async Task<IActionResult> Index()
         {
             return View(await _context.Rooms.Select(r => r.ToViewModel()).ToListAsync());
         }
 
-        // GET: Rooms/Details/5
+        // GET: RoomViewModels/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -33,40 +31,40 @@ namespace HotelManagment.Controllers
                 return NotFound();
             }
 
-            var room = await _context.Rooms
+            var roomViewModels = await _context.Rooms
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (room == null)
+            if (roomViewModels == null)
             {
                 return NotFound();
             }
 
-            return View(room.ToViewModel());
+            return View(roomViewModels.ToViewModel());
         }
 
-        // GET: Rooms/Create
+        // GET: RoomViewModels/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Rooms/Create
+        // POST: RoomViewModels/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Number,Price,Type")] Room room)
+        public async Task<IActionResult> Create([Bind("Id,Number,Price,Type")] RoomViewModels roomViewModels)
         {
             if (ModelState.IsValid)
             {
-                room.Id = Guid.NewGuid();
-                _context.Add(room);
+                roomViewModels.Id = Guid.NewGuid();
+                _context.Add(roomViewModels);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(room.ToViewModel());
+            return View(roomViewModels);
         }
 
-        // GET: Rooms/Edit/5
+        // GET: RoomViewModels/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -82,14 +80,14 @@ namespace HotelManagment.Controllers
             return View(room.ToViewModel());
         }
 
-        // POST: Rooms/Edit/5
+        // POST: RoomViewModels/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Number,Price,Type")] Room room)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Number,Price,Type")] RoomViewModels roomViewModels)
         {
-            if (id != room.Id)
+            if (id != roomViewModels.Id)
             {
                 return NotFound();
             }
@@ -98,12 +96,12 @@ namespace HotelManagment.Controllers
             {
                 try
                 {
-                    _context.Update(room);
+                    _context.Update(roomViewModels);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!RoomExists(room.Id))
+                    if (!RoomViewModelsExists(roomViewModels.Id))
                     {
                         return NotFound();
                     }
@@ -114,10 +112,10 @@ namespace HotelManagment.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(room.ToViewModel());
+            return View(roomViewModels);
         }
 
-        // GET: Rooms/Delete/5
+        // GET: RoomViewModels/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -125,28 +123,28 @@ namespace HotelManagment.Controllers
                 return NotFound();
             }
 
-            var room = await _context.Rooms
+            var rooms = await _context.Rooms
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (room == null)
+            if (rooms == null)
             {
                 return NotFound();
             }
 
-            return View(room.ToViewModel());
+            return View(rooms.ToViewModel());
         }
 
-        // POST: Rooms/Delete/5
+        // POST: RoomViewModels/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var room = await _context.Rooms.FindAsync(id);
-            _context.Rooms.Remove(room);
+            var rooms = await _context.Rooms.FindAsync(id);
+            _context.Rooms.Remove(rooms);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool RoomExists(Guid id)
+        private bool RoomViewModelsExists(Guid id)
         {
             return _context.Rooms.Any(e => e.Id == id);
         }
