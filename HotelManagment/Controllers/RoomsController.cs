@@ -1,10 +1,10 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using HotelManagment.Data;
+using HotelManagment.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using HotelManagment.Data;
-using HotelManagment.Models;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace HotelManagment.Controllers
 {
@@ -54,14 +54,15 @@ namespace HotelManagment.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Number,Price,Type")] RoomViewModels roomViewModels)
         {
+            var room = roomViewModels.ToEntity();
             if (ModelState.IsValid)
             {
-                roomViewModels.Id = Guid.NewGuid();
-                _context.Add(roomViewModels);
+                room.Id = Guid.NewGuid();
+                _context.Add(room);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(roomViewModels);
+            return View(room.ToViewModel());
         }
 
         // GET: RoomViewModels/Edit/5
@@ -87,7 +88,8 @@ namespace HotelManagment.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("Id,Number,Price,Type")] RoomViewModels roomViewModels)
         {
-            if (id != roomViewModels.Id)
+            var room = roomViewModels.ToEntity();
+            if (id != room.Id)
             {
                 return NotFound();
             }
@@ -96,12 +98,12 @@ namespace HotelManagment.Controllers
             {
                 try
                 {
-                    _context.Update(roomViewModels);
+                    _context.Update(room);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!RoomViewModelsExists(roomViewModels.Id))
+                    if (!RoomViewModelsExists(room.Id))
                     {
                         return NotFound();
                     }
@@ -112,7 +114,7 @@ namespace HotelManagment.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(roomViewModels);
+            return View(room.ToViewModel());
         }
 
         // GET: RoomViewModels/Delete/5
