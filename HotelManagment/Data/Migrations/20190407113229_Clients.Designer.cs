@@ -4,14 +4,16 @@ using HotelManagment.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HotelManagment.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190407113229_Clients")]
+    partial class Clients
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,24 +43,6 @@ namespace HotelManagment.Data.Migrations
                     b.ToTable("Client");
                 });
 
-            modelBuilder.Entity("HotelManagment.Data.Entities.Reservation", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("CheckIn");
-
-                    b.Property<DateTime>("CheckOut");
-
-                    b.Property<Guid?>("ClientId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClientId");
-
-                    b.ToTable("Reservations");
-                });
-
             modelBuilder.Entity("HotelManagment.Data.Entities.Room", b =>
                 {
                     b.Property<Guid>("Id")
@@ -73,24 +57,6 @@ namespace HotelManagment.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Rooms");
-                });
-
-            modelBuilder.Entity("HotelManagment.Data.Entities.RoomReservation", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<Guid?>("ReservationId");
-
-                    b.Property<Guid?>("RoomId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ReservationId");
-
-                    b.HasIndex("RoomId");
-
-                    b.ToTable("RoomReservations");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -256,24 +222,6 @@ namespace HotelManagment.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("HotelManagment.Data.Entities.Reservation", b =>
-                {
-                    b.HasOne("HotelManagment.Data.Entities.Client", "Client")
-                        .WithMany("Reservations")
-                        .HasForeignKey("ClientId");
-                });
-
-            modelBuilder.Entity("HotelManagment.Data.Entities.RoomReservation", b =>
-                {
-                    b.HasOne("HotelManagment.Data.Entities.Reservation", "Reservation")
-                        .WithMany("RoomReservations")
-                        .HasForeignKey("ReservationId");
-
-                    b.HasOne("HotelManagment.Data.Entities.Room", "Room")
-                        .WithMany()
-                        .HasForeignKey("RoomId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
