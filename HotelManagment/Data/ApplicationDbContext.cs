@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using HotelManagment.Data.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,5 +10,7 @@ namespace HotelManagment.Data
             : base(options)
         {
         }
+
+        public DbSet<Room> Rooms { get; set; }
     }
 }
